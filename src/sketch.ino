@@ -1,8 +1,11 @@
 #include <Wire.h>
-#include <LiquidCrystal_I2C.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 #include <DHT.h>
 
-LiquidCrystal_I2C lcd(0x27, 16, 2);
+#define SCREEN_WIDTH 128 
+#define SCREEN_HEIGHT 64 
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 #define DHTPIN 15
 #define DHTTYPE DHT22
@@ -22,12 +25,18 @@ float R0 = 10.0;
 void setup() {
   Serial.begin(115200);
 
-  lcd.init();
-  lcd.backlight();
-  lcd.setCursor(0, 0);
-  lcd.print("Smart Farm Init");
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println(F("Gagal inisialisasi OLED"));
+    for(;;); 
+  }
+
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0, 0);
+  display.println("Smart Farm Init...");
+  display.display();
   delay(2000);
-  lcd.clear();
 
   dht.begin();
   pinMode(MQ135_PIN, INPUT);
@@ -72,29 +81,24 @@ void loop() {
     ppmAmonia = NH3_A * pow(ratio, NH3_B);
   }
 
-  if (suhu > 30.0 || ppmAmonia > 25.0) {
-    digitalWrite(RELAY_KIPAS, HIGH); 
-  } else {
-    digitalWrite(RELAY_KIPAS, LOW); 
-  }
-
-  if (suhu < 25.0) {
-    digitalWrite(RELAY_PEMANAS, HIGH); 
-  } else {
-    digitalWrite(RELAY_PEMANAS, LOW);  
-  }
 
   Serial.print("Suhu: "); Serial.print(suhu); Serial.print(" C | ");
   Serial.print("RH: "); Serial.print(kelembapan); Serial.print(" % | ");
   Serial.print("Amonia: "); Serial.print(ppmAmonia); Serial.println(" PPM");
 
-  lcd.setCursor(0, 0);
-  lcd.print("T:"); lcd.print(suhu, 1); lcd.print("C ");
-  lcd.print("H:"); lcd.print(kelembapan, 0); lcd.print("%");
+ display.clearDisplay();
+  display.setTextSize(1);
+  display.setCursor(0, 0);
+  display.print("Suhu   : "); display.print(suhu, 1); display.print(" C");
 
-  lcd.setCursor(0, 1);
-  lcd.print("NH3:"); lcd.print(ppmAmonia, 1); lcd.print(" PPM");
-  lcd.print("      "); 
+  display.setCursor(0, 16);
+  display.print("Lembap : "); display.print(kelembapan, 0); display.print(" %");
+
+  display.setCursor(0, 32);
+  display.print("Amonia : "); display.print(ppmAmonia, 1); display.print(" PPM");
+
+  display.setCursor(0, 52); 
+  display.display();
 
   delay(2000); 
 }
