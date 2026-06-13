@@ -33,8 +33,8 @@ void setup() {
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
-  display.setCursor(0, 0);
-  display.println("Smart Farm Init...");
+  display.setCursor(10, 28);
+  display.println("Welcome to Pintelor...");
   display.display();
   delay(2000);
 
