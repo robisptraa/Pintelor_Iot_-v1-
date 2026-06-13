@@ -1,31 +1,48 @@
 {
   "version": 1,
-  "author": "Custom Smart Poultry Dev",
+  "author": "Obets",
   "editor": "wokwi",
   "parts": [
-    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
-    { "type": "board-ssd1306", "id": "lcd", "top": -150, "left": -150, "attrs": {} },
-    { "type": "wokwi-text", "id": "info_sht31", "top": -120, "left": 180, "attrs": { "text": "SHT31 (I2C)" } },
-    { "type": "wokwi-analog-navigator", "id": "mq135", "top": 150, "left": -150, "attrs": { "label": "MQ-135 Amonia" } },
-    { "type": "wokwi-relay-module", "id": "relay1", "top": -150, "left": 150, "attrs": { "label": "Relay Kipas 1" } },
-    { "type": "wokwi-relay-module", "id": "relay2", "top": 0, "left": 150, "attrs": { "label": "Relay Kipas 2" } }
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": 40, "left": 0, "attrs": {} },
+    { "type": "board-ssd1306", "id": "oled", "top": -100, "left": -130, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht", "top": -130, "left": 160, "attrs": {} },
+    {
+      "type": "wokwi-relay-module",
+      "id": "relay1",
+      "top": 48.2,
+      "left": 192,
+      "attrs": { "label": "Relay Kipas 1" }
+    },
+    {
+      "type": "wokwi-relay-module",
+      "id": "relay2",
+      "top": 144.2,
+      "left": 192,
+      "attrs": { "label": "Relay Kipas 2" }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot_mq135",
+      "top": 200,
+      "left": -150,
+      "attrs": { "label": "MQ135 (Amonia)" }
+    }
   ],
   "connections": [
-    [ "esp:GND.1", "mq135:GND", "black", [ "v0" ] ],
-    [ "esp:GND.1", "lcd:GND", "black", [ "v0" ] ],
+    [ "esp:GND.1", "oled:GND", "black", [ "v0" ] ],
+    [ "esp:GND.1", "dht:GND", "black", [ "v0" ] ],
+    [ "esp:GND.1", "pot_mq135:GND", "black", [ "v0" ] ],
+    [ "esp:3V3", "oled:VCC", "red", [ "v0" ] ],
+    [ "esp:3V3", "dht:VCC", "red", [ "v0" ] ],
+    [ "esp:3V3", "pot_mq135:VCC", "red", [ "v0" ] ],
+    [ "esp:21", "oled:SDA", "blue", [ "v0" ] ],
+    [ "esp:22", "oled:SCL", "yellow", [ "v0" ] ],
+    [ "esp:15", "dht:SDA", "green", [ "v0" ] ],
+    [ "esp:34", "pot_mq135:SIG", "orange", [ "v0" ] ],
     [ "esp:GND.1", "relay1:GND", "black", [ "v0" ] ],
     [ "esp:GND.1", "relay2:GND", "black", [ "v0" ] ],
-    
-    [ "esp:3V3", "lcd:VCC", "red", [ "v0" ] ],
-    [ "esp:5V", "mq135:VCC", "red", [ "v0" ] ],
     [ "esp:5V", "relay1:VCC", "red", [ "v0" ] ],
     [ "esp:5V", "relay2:VCC", "red", [ "v0" ] ],
-
-    [ "esp:21", "lcd:SDA", "green", [ "v0" ] ],
-    [ "esp:22", "lcd:SCL", "yellow", [ "v0" ] ],
-
-    [ "esp:34", "mq135:AO", "blue", [ "v0" ] ],
-
     [ "esp:25", "relay1:IN", "purple", [ "v0" ] ],
     [ "esp:26", "relay2:IN", "orange", [ "v0" ] ]
   ],
