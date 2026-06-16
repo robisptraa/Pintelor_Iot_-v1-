@@ -7,20 +7,6 @@
     { "type": "board-ssd1306", "id": "oled", "top": -100, "left": -130, "attrs": {} },
     { "type": "wokwi-dht22", "id": "dht", "top": -130, "left": 160, "attrs": {} },
     {
-      "type": "wokwi-relay-module",
-      "id": "relay1",
-      "top": 48.2,
-      "left": 192,
-      "attrs": { "label": "Relay Kipas 1" }
-    },
-    {
-      "type": "wokwi-relay-module",
-      "id": "relay2",
-      "top": 144.2,
-      "left": 192,
-      "attrs": { "label": "Relay Kipas 2" }
-    },
-    {
       "type": "wokwi-potentiometer",
       "id": "pot_mq135",
       "top": 200,
@@ -39,12 +25,6 @@
     [ "esp:GND.3", "pot_mq135:GND", "black", [ "h-20", "v60" ] ],
     [ "esp:3V3", "pot_mq135:VCC", "red", [ "h-30", "v70" ] ],
     [ "esp:34", "pot_mq135:SIG", "orange", [ "h-40", "v80" ] ],
-    [ "esp:GND.2", "relay1:GND", "black", [ "h20", "v20" ] ],
-    [ "esp:VIN", "relay1:VCC", "red", [ "h30", "v30" ] ],
-    [ "esp:26", "relay1:IN", "purple", [ "h40", "v40" ] ],
-    [ "esp:GND.3", "relay2:GND", "black", [ "h20", "v60" ] ],
-    [ "esp:VIN", "relay2:VCC", "red", [ "h30", "v70" ] ],
-    [ "esp:27", "relay2:IN", "orange", [ "h40", "v80" ] ],
     [ "oled:VCC", "esp:VIN", "red", [ "v-21.66", "h-100.02", "v297.6", "h153.6", "v9.6" ] ],
     [ "pot_mq135:GND", "esp:GND.2", "black", [ "v48.3", "h-90.2", "v-153.6", "h192", "v19.2" ] ],
     [ "oled:SDA", "esp:D21", "green", [ "v-40.86", "h72.7", "v144", "h105.6", "v96" ] ],

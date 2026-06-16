@@ -12,9 +12,6 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 DHT dht(DHTPIN, DHTTYPE);
 
 #define MQ135_PIN 34 
-#define RELAY_KIPAS 26    
-#define RELAY_PEMANAS 27 
-
 #define RL_VALUE 10.0       
 #define RO_CLEAN_AIR 3.63   
 #define NH3_A 102.2      
@@ -34,18 +31,12 @@ void setup() {
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(10, 28);
-  display.println("Welcome to Pintelor...");
+  display.println("Welcome to Pintelor");
   display.display();
   delay(2000);
 
   dht.begin();
   pinMode(MQ135_PIN, INPUT);
-
-  pinMode(RELAY_KIPAS, OUTPUT);
-  pinMode(RELAY_PEMANAS, OUTPUT);
-  
-  digitalWrite(RELAY_KIPAS, LOW); 
-  digitalWrite(RELAY_PEMANAS, LOW);
 
   // === (Kalibration logic R0) 
   // float calcR0 = 0;
@@ -67,11 +58,10 @@ void loop() {
   int rawValue = analogRead(MQ135_PIN); 
 
   if (isnan(suhu) || isnan(kelembapan)) {
-    Serial.println("Gagal membaca sensor Suhu!");
+    Serial.println("dht not connected, not reading values");
     return;
   }
 
- 
   float voltage = rawValue * (3.3 / 4095.0);
   
   float ppmAmonia = 0;
@@ -80,19 +70,7 @@ void loop() {
     float ratio = Rs / R0;
     ppmAmonia = NH3_A * pow(ratio, NH3_B);
   }
-
-  // if (suhu > 30.0 || ppmAmonia > 25.0) {
-  //   digitalWrite(RELAY_KIPAS, HIGH); 
-  // } else {
-  //   digitalWrite(RELAY_KIPAS, LOW); 
-  // }
-
-  // if (suhu < 25.0) {
-  //   digitalWrite(RELAY_PEMANAS, HIGH); 
-  // } else {
-  //   digitalWrite(RELAY_PEMANAS, LOW);  
-  // }
-
+  
   Serial.print("Suhu: "); Serial.print(suhu); Serial.print(" C | ");
   Serial.print("RH: "); Serial.print(kelembapan); Serial.print(" % | ");
   Serial.print("Amonia: "); Serial.print(ppmAmonia); Serial.println(" PPM");
@@ -109,8 +87,6 @@ void loop() {
   display.print("Amonia : "); display.print(ppmAmonia, 1); display.print(" PPM");
 
   display.setCursor(0, 52); 
-  // display.print("K:"); display.print(statusKipas ? "ON " : "OFF ");
-  // display.print("P:"); display.print(statusPemanas ? "ON " : "OFF");
   display.display();
 
   delay(2000); 
